@@ -4,9 +4,7 @@ package edu.com.francoSalazar.EF_DAWI_Zalazar_Lopez.controller;
 import edu.com.francoSalazar.EF_DAWI_Zalazar_Lopez.dto.CarCreateDto;
 import edu.com.francoSalazar.EF_DAWI_Zalazar_Lopez.dto.CarDetailDto;
 import edu.com.francoSalazar.EF_DAWI_Zalazar_Lopez.dto.CarDto;
-import edu.com.francoSalazar.EF_DAWI_Zalazar_Lopez.response.createCarResponse;
-import edu.com.francoSalazar.EF_DAWI_Zalazar_Lopez.response.findAllCarResponse;
-import edu.com.francoSalazar.EF_DAWI_Zalazar_Lopez.response.findCarDetailResponse;
+import edu.com.francoSalazar.EF_DAWI_Zalazar_Lopez.response.*;
 import edu.com.francoSalazar.EF_DAWI_Zalazar_Lopez.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -63,5 +61,31 @@ public class CarController {
         }
     }
 
+    @PutMapping("/update")
+    public updateCarResponse updateCar(@RequestBody CarDto car){
+        try{
+            boolean c =carService.updateCar(car);
+            if(c)
+                return new updateCarResponse("01",null);
+            else
+                return new updateCarResponse("02","update failed.");
+        }catch (Exception e){
+            e.getStackTrace();
+            return new updateCarResponse("99","An error ocurred, please try again.");
+        }
+    }
+
+    @DeleteMapping("delete/{id}")
+    public deleteCarResponse deleteCar(@PathVariable Integer id){
+        try {
+            if(carService.deleteCar(id))
+                return new deleteCarResponse("01",null);
+            else
+                return new deleteCarResponse("02","failed delete");
+        }catch (Exception e){
+            e.getStackTrace();
+            return new deleteCarResponse("99","An error ocurred, please try again.");
+        }
+    }
 
 }
